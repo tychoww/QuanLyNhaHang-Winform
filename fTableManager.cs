@@ -30,12 +30,27 @@ namespace QuanLyNhaHang_Winform
             this.LoginAccount = acc;
 
             LoadTable();
+            LoadCategory();
         }
+
+        void LoadCategory()
+        {
+            List<Category> listCategory = CategoryDAO.Instance.getListCategory();
+            cboCategory.DataSource = listCategory;
+            cboCategory.DisplayMember = "categoryName";
+        }
+
+        void loadDishListByCategoryID(int categoryID)
+        {
+            List<Dish> listDish = DishDAO.Instance.getDishBytCategoryID(categoryID);
+            cboDish.DataSource = listDish;
+            cboDish.DisplayMember = "dishName";
+        } 
 
         #region Methods
         void ChangeAccount(string roleID)
         {
-            quảnLýToolStripMenuItem.Enabled = roleID == "admin";
+            quảnTrịToolStripMenuItem.Enabled = roleID == "admin";
             thôngTinCáNhânToolStripMenuItem.Text += " (" + loginAccount.employeeName + ")";
         }
 
@@ -116,5 +131,17 @@ namespace QuanLyNhaHang_Winform
             showInvoice(tableId);
         }
         #endregion
+
+        private void cboCategory_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int id = 0;
+            ComboBox cb = sender as ComboBox;
+            if (cb.SelectedItem == null) return;
+
+            Category selected = cb.SelectedItem as Category;
+            id = selected.categoryID;
+
+            loadDishListByCategoryID(id);
+        }
     }
 }
