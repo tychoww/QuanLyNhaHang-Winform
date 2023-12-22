@@ -29,7 +29,7 @@ namespace QuanLyNhaHang_Winform.DAO
 
             string query = "SELECT [Dish].DishName, [Invoice_Detail].Quantity, [Dish].Price, [Dish].Price*[Invoice_Detail].Quantity as 'TotalPrice' " +
                 "FROM [Dish], [Invoice_Detail], [Invoice]\r\n" +
-                "WHERE [Invoice_Detail].InvoiceID = [Invoice].InvoiceID AND [Invoice].TableID = @TableID;";
+                "WHERE [Invoice_Detail].InvoiceID = [Invoice].InvoiceID AND [Invoice].Status = 0 AND [Invoice].TableID = @TableID;";
 
             // Sử dụng parameters để ngăn chặn SQL Injection
             SqlParameter[] parameters = new SqlParameter[]

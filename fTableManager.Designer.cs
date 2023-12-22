@@ -41,7 +41,12 @@
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.btnPay = new System.Windows.Forms.Button();
+            this.btnAddDish = new System.Windows.Forms.Button();
+            this.txtTotalPrice = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
+            this.panel2.SuspendLayout();
+            this.panel4.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -87,13 +92,16 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.btnAddDish);
             this.panel2.Location = new System.Drawing.Point(418, 27);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(370, 78);
+            this.panel2.Size = new System.Drawing.Size(370, 58);
             this.panel2.TabIndex = 2;
             // 
             // panel4
             // 
+            this.panel4.Controls.Add(this.txtTotalPrice);
+            this.panel4.Controls.Add(this.btnPay);
             this.panel4.Location = new System.Drawing.Point(418, 380);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(370, 58);
@@ -116,9 +124,9 @@
             this.columnHeader4});
             this.lstvInvoiceInfor.GridLines = true;
             this.lstvInvoiceInfor.HideSelection = false;
-            this.lstvInvoiceInfor.Location = new System.Drawing.Point(418, 111);
+            this.lstvInvoiceInfor.Location = new System.Drawing.Point(418, 95);
             this.lstvInvoiceInfor.Name = "lstvInvoiceInfor";
-            this.lstvInvoiceInfor.Size = new System.Drawing.Size(370, 263);
+            this.lstvInvoiceInfor.Size = new System.Drawing.Size(370, 279);
             this.lstvInvoiceInfor.TabIndex = 6;
             this.lstvInvoiceInfor.UseCompatibleStateImageBehavior = false;
             this.lstvInvoiceInfor.View = System.Windows.Forms.View.Details;
@@ -126,7 +134,7 @@
             // columnHeader1
             // 
             this.columnHeader1.Text = "Tên món";
-            this.columnHeader1.Width = 96;
+            this.columnHeader1.Width = 144;
             // 
             // columnHeader2
             // 
@@ -140,6 +148,37 @@
             // 
             this.columnHeader4.Text = "Thành tiền";
             this.columnHeader4.Width = 77;
+            // 
+            // btnPay
+            // 
+            this.btnPay.Location = new System.Drawing.Point(263, 3);
+            this.btnPay.Name = "btnPay";
+            this.btnPay.Size = new System.Drawing.Size(104, 52);
+            this.btnPay.TabIndex = 0;
+            this.btnPay.Text = "Thanh toán";
+            this.btnPay.UseVisualStyleBackColor = true;
+            // 
+            // btnAddDish
+            // 
+            this.btnAddDish.Location = new System.Drawing.Point(273, 3);
+            this.btnAddDish.Name = "btnAddDish";
+            this.btnAddDish.Size = new System.Drawing.Size(94, 52);
+            this.btnAddDish.TabIndex = 1;
+            this.btnAddDish.Text = "Thêm món";
+            this.btnAddDish.UseVisualStyleBackColor = true;
+            // 
+            // txtTotalPrice
+            // 
+            this.txtTotalPrice.BackColor = System.Drawing.Color.White;
+            this.txtTotalPrice.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtTotalPrice.ForeColor = System.Drawing.Color.Firebrick;
+            this.txtTotalPrice.Location = new System.Drawing.Point(157, 17);
+            this.txtTotalPrice.Name = "txtTotalPrice";
+            this.txtTotalPrice.ReadOnly = true;
+            this.txtTotalPrice.Size = new System.Drawing.Size(100, 25);
+            this.txtTotalPrice.TabIndex = 1;
+            this.txtTotalPrice.Text = "0";
+            this.txtTotalPrice.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // fTableManager
             // 
@@ -157,6 +196,9 @@
             this.Text = "fTableManager";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel4.ResumeLayout(false);
+            this.panel4.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -176,5 +218,8 @@
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.ColumnHeader columnHeader4;
+        private System.Windows.Forms.Button btnPay;
+        private System.Windows.Forms.Button btnAddDish;
+        private System.Windows.Forms.TextBox txtTotalPrice;
     }
 }

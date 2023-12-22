@@ -5,8 +5,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -76,6 +78,7 @@ namespace QuanLyNhaHang_Winform
             lstvInvoiceInfor.Items.Clear();
 
             List<InvoiceCheckout> listInvoiceCheckout = InvoiceCheckoutDAO.Instance.getListInvoiceCheckoutByTable(tableId);
+            double totalPrice = 0;
 
             foreach (InvoiceCheckout item in listInvoiceCheckout)
             {
@@ -83,8 +86,14 @@ namespace QuanLyNhaHang_Winform
                 lsvItem.SubItems.Add(item.quantity.ToString());
                 lsvItem.SubItems.Add(item.price.ToString());
                 lsvItem.SubItems.Add(item.totalPrice.ToString());
+                totalPrice += item.totalPrice;
                 lstvInvoiceInfor.Items.Add(lsvItem);
             }
+
+            CultureInfo culture = new CultureInfo("vi-VN");
+            Thread.CurrentThread.CurrentCulture = culture;
+
+            txtTotalPrice.Text = totalPrice.ToString("c", culture);
         }
 
         #endregion
