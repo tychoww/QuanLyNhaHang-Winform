@@ -95,14 +95,17 @@ namespace QuanLyNhaHang_Winform
             List<InvoiceCheckout> listInvoiceCheckout = InvoiceCheckoutDAO.Instance.getListInvoiceCheckoutByTable(tableId);
             double totalPrice = 0;
 
-            foreach (InvoiceCheckout item in listInvoiceCheckout)
+            if (listInvoiceCheckout.Count > 0)
             {
-                ListViewItem lsvItem = new ListViewItem(item.dishName.ToString());
-                lsvItem.SubItems.Add(item.quantity.ToString());
-                lsvItem.SubItems.Add(item.price.ToString());
-                lsvItem.SubItems.Add(item.totalPrice.ToString());
-                totalPrice += item.totalPrice;
-                lstvInvoiceInfor.Items.Add(lsvItem);
+                foreach (InvoiceCheckout item in listInvoiceCheckout)
+                {
+                    ListViewItem lsvItem = new ListViewItem(item.dishName.ToString());
+                    lsvItem.SubItems.Add(item.quantity.ToString());
+                    lsvItem.SubItems.Add(item.price.ToString());
+                    lsvItem.SubItems.Add(item.totalPrice.ToString());
+                    totalPrice += item.totalPrice;
+                    lstvInvoiceInfor.Items.Add(lsvItem);
+                }
             }
 
             CultureInfo culture = new CultureInfo("vi-VN");
@@ -128,9 +131,9 @@ namespace QuanLyNhaHang_Winform
         private void btn_Click(object sender, EventArgs e)
         {
             int tableId = ((sender as Button).Tag as Table).tableID;
+            lstvInvoiceInfor.Tag = (sender as Button).Tag;
             showInvoice(tableId);
         }
-        #endregion
 
         private void cboCategory_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -143,5 +146,39 @@ namespace QuanLyNhaHang_Winform
 
             loadDishListByCategoryID(id);
         }
+
+        private void btnAddDish_Click(object sender, EventArgs e)
+        {
+            Table table = lstvInvoiceInfor.Tag as Table; // Lấy ra Table hiện tại
+
+            int invoiceID = InvoiceDAO.Instance.getUncheckInvoiceByTableID(table.tableID);
+            int dishID = (cboDish.SelectedItem as Dish).dishID;
+            int quanity = (int)nudDishQuantity.Value;
+
+            if (invoiceID == -1) // Table chưa có Invoice
+            {
+                // Tạo Invoice mới dựa vào Table
+                InvoiceDAO.Instance.InsertInvoice(table.tableID);
+                // Insert InvoiceDetail
+                InvoiceDetailDAO.Instance.InsertInvoiceDetail(InvoiceDAO.Instance.GetMaxInvoiceID(), dishID, quanity);
+            }
+            else // Nếu Table đã có Invoice
+            {
+                // Nếu Invoice Detail đã tồn tại Dish thì update số lượng (Quantity)
+                if (InvoiceDetailDAO.Instance.isExistingDishInInvoicedetail(invoiceID, dishID))
+                {
+                    InvoiceDetailDAO.Instance.UpdateInvoiceDetail(invoiceID, dishID, quanity);
+                }
+                // Nếu Invoice Detail chưa tồn tại Dish thì insert theo số lượng (Quantity)
+                else
+                {
+                    InvoiceDetailDAO.Instance.InsertInvoiceDetail(invoiceID, dishID, quanity);
+                }
+            }
+
+            showInvoice(table.tableID);
+        }
+
+        #endregion
     }
 }

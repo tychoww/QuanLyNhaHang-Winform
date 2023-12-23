@@ -45,5 +45,31 @@ namespace QuanLyNhaHang_Winform.DAO
             }
             return -1;
         }
+
+        public void InsertInvoice(int tableID)
+        {
+            string query = "INSERT INTO [Invoice] (CustomerID, EmployeeID, TableID, DateCheckin, DateCheckout, Status)" +
+                "VALUES (null, null, @TableID, GETDATE(), null, 0);";
+
+            // Sử dụng parameters để ngăn chặn SQL Injection
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@TableID", SqlDbType.Int) { Value = tableID }
+            };
+
+            DataProvider.Instance.ExecuteNonQuery(query, parameters);
+        }
+
+        public int GetMaxInvoiceID()
+        {
+            try
+            {
+                return (int)DataProvider.Instance.ExecuteScalar("SELECT MAX(InvoiceID) FROM [Invoice]");
+            }
+            catch
+            {
+                return 1;
+            }
+        }
     }
 }

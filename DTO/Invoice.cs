@@ -38,8 +38,9 @@ namespace QuanLyNhaHang_Winform.DTO
         public Invoice(DataRow row)
         {
             this.invoiceID = (int)row["invoiceID"];
-            this.customerID = (int)row["customerID"];
-            this.employeeID = (int)row["employeeID"];
+            // Kiểm tra xem giá trị có phải là null hay không trước khi chuyển đổi
+            this.customerID = Convert.IsDBNull(row["customerID"]) ? 0 : (int)row["customerID"]; // Các giá trị có thể NULL => 0
+            this.employeeID = Convert.IsDBNull(row["employeeID"]) ? 0 : (int)row["employeeID"]; // Các giá trị có thể NULL => 0
             this.tableID = (int)row["tableID"];
             this.dateCheckin = (DateTime)row["dateCheckin"];
 

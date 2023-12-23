@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace QuanLyNhaHang_Winform.DAO
 {
@@ -27,9 +28,9 @@ namespace QuanLyNhaHang_Winform.DAO
         {
             List<InvoiceCheckout> listInvoiceCheckoutByTable = new List<InvoiceCheckout>();
 
-            string query = "SELECT [Dish].DishName, [Invoice_Detail].Quantity, [Dish].Price, [Dish].Price*[Invoice_Detail].Quantity as 'TotalPrice' " +
-                "FROM [Dish], [Invoice_Detail], [Invoice]\r\n" +
-                "WHERE [Invoice_Detail].InvoiceID = [Invoice].InvoiceID AND [Invoice].Status = 0 AND [Invoice].TableID = @TableID;";
+            string query = "SELECT D.DishName, INVD.Quantity, D.Price, D.Price * INVD.Quantity as 'TotalPrice'" +
+                " FROM [Dish] AS D, [Invoice_Detail] AS INVD, [Invoice] AS INV" +
+                " WHERE INVD.InvoiceID = INV.InvoiceID AND D.DishID = INVD.DishID AND INV.Status = 0 AND INV.TableID = @TableID;";
 
             // Sử dụng parameters để ngăn chặn SQL Injection
             SqlParameter[] parameters = new SqlParameter[]
