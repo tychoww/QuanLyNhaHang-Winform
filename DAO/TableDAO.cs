@@ -20,8 +20,8 @@ namespace QuanLyNhaHang_Winform.DAO
             private set { instance = value; }
         }
 
-        public static int TableWidth = 90;
-        public static int TableHeight = 90;
+        public static int TableWidth = 100;
+        public static int TableHeight = 100;
 
         private TableDAO() { }
 

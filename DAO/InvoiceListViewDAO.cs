@@ -11,22 +11,22 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace QuanLyNhaHang_Winform.DAO
 {
-    public class InvoiceCheckoutDAO
+    public class InvoiceListViewDAO
     {
-        private static InvoiceCheckoutDAO instance;
+        private static InvoiceListViewDAO instance;
 
-        public static InvoiceCheckoutDAO Instance
+        public static InvoiceListViewDAO Instance
         {
-            get { return instance ?? (instance = new InvoiceCheckoutDAO()); }
+            get { return instance ?? (instance = new InvoiceListViewDAO()); }
             private set { instance = value; }
         }
 
-        private InvoiceCheckoutDAO() { }
+        private InvoiceListViewDAO() { }
 
 
-        public List<InvoiceCheckout> getListInvoiceCheckoutByTable(int tableID)
+        public List<InvoiceListView> getListInvoiceListViewByTable(int tableID)
         {
-            List<InvoiceCheckout> listInvoiceCheckoutByTable = new List<InvoiceCheckout>();
+            List<InvoiceListView> listInvoiceListViewByTable = new List<InvoiceListView>();
 
             string query = "SELECT D.DishName, INVD.Quantity, D.Price, D.Price * INVD.Quantity as 'TotalPrice'" +
                 " FROM [Dish] AS D, [Invoice_Detail] AS INVD, [Invoice] AS INV" +
@@ -41,12 +41,12 @@ namespace QuanLyNhaHang_Winform.DAO
             DataTable data = DataProvider.Instance.ExecuteQuery(query, parameters);
 
             foreach (DataRow item in data.Rows) {
-                InvoiceCheckout invoicecheckout = new InvoiceCheckout(item);
-                listInvoiceCheckoutByTable.Add(invoicecheckout);
+                InvoiceListView invoicelistview = new InvoiceListView(item);
+                listInvoiceListViewByTable.Add(invoicelistview);
             }
 
 
-            return listInvoiceCheckoutByTable;
+            return listInvoiceListViewByTable;
         }
     }
 }

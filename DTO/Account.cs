@@ -15,7 +15,7 @@ namespace QuanLyNhaHang_Winform.DTO
             int employeeID, 
             string employeeName, 
             string address, 
-            int phoneNumber, 
+            string phoneNumber, 
             string email, 
             string roleID, 
             string shiftID)
@@ -34,10 +34,10 @@ namespace QuanLyNhaHang_Winform.DTO
         public Account(DataRow row) {
             this.userName = row["userName"].ToString();
             this.passWord = row["passWord"].ToString();
-            this.employeeID = Convert.ToInt32(row["employeeID"]);
+            this.employeeID = (int)row["employeeID"];
             this.employeeName = row["employeeName"].ToString();
             this.address = row["address"].ToString();
-            this.phoneNumber = Convert.ToInt32(row["phoneNumber"]);
+            this.phoneNumber = row["phoneNumber"].ToString();
             this.email = row["email"].ToString();
             this.roleID = row["roleID"].ToString();
             this.shiftID = row["shiftID"].ToString();
@@ -48,7 +48,7 @@ namespace QuanLyNhaHang_Winform.DTO
         public int employeeID { get; set; }
         public string employeeName { get; set; }
         public string address { get; set; }
-        public int phoneNumber { get; set; }
+        public string phoneNumber { get; set; }
         public string email { get; set; }
         public string roleID { get; set; }
         public string shiftID { get; set;}

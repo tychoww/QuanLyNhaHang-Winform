@@ -52,6 +52,7 @@ namespace QuanLyNhaHang_Winform
         {
             quảnTrịToolStripMenuItem.Enabled = roleID == "admin";
             thôngTinCáNhânToolStripMenuItem.Text += " (" + loginAccount.employeeName + ")";
+            txtInvoicingEmployee.Text = loginAccount.employeeName + " (" + loginAccount.phoneNumber + ")";
         }
 
         void LoadTable()
@@ -74,10 +75,6 @@ namespace QuanLyNhaHang_Winform
                         btn.BackColor = Color.LightBlue;
                         btn.Text = item.tableName + Environment.NewLine + "Trống";
                         break;
-                    case "occupied":
-                        btn.BackColor = Color.LightYellow;
-                        btn.Text = item.tableName + Environment.NewLine + "Đã đặt";
-                        break;
                     default:
                         btn.BackColor = Color.LightBlue;
                         btn.Text = item.tableName + Environment.NewLine + "Trống";
@@ -92,12 +89,12 @@ namespace QuanLyNhaHang_Winform
         {
             lstvInvoiceInfor.Items.Clear();
 
-            List<InvoiceCheckout> listInvoiceCheckout = InvoiceCheckoutDAO.Instance.getListInvoiceCheckoutByTable(tableId);
+            List<InvoiceListView> listInvoiceListView = InvoiceListViewDAO.Instance.getListInvoiceListViewByTable(tableId);
             double totalPrice = 0;
 
-            if (listInvoiceCheckout.Count > 0)
+            if (listInvoiceListView.Count > 0)
             {
-                foreach (InvoiceCheckout item in listInvoiceCheckout)
+                foreach (InvoiceListView item in listInvoiceListView)
                 {
                     ListViewItem lsvItem = new ListViewItem(item.dishName.ToString());
                     lsvItem.SubItems.Add(item.quantity.ToString());
@@ -130,7 +127,9 @@ namespace QuanLyNhaHang_Winform
 
         private void btn_Click(object sender, EventArgs e)
         {
-            int tableId = ((sender as Button).Tag as Table).tableID;
+            Table table = (sender as Button).Tag as Table;
+            int tableId = table.tableID;
+            lblTableSelected.Text = table.tableName;
             lstvInvoiceInfor.Tag = (sender as Button).Tag;
             showInvoice(tableId);
         }
@@ -178,7 +177,59 @@ namespace QuanLyNhaHang_Winform
 
             showInvoice(table.tableID);
         }
-
         #endregion
+
+        private void btnCheckout_Click(object sender, EventArgs e)
+        {
+            Table table = lstvInvoiceInfor.Tag as Table;
+            Customer customer = txtPayingCustomer.Tag as Customer;
+
+            int invoiceID = InvoiceDAO.Instance.getUncheckInvoiceByTableID(table.tableID);
+            int employeeID = loginAccount.employeeID;
+            int? customerID;
+
+            if(customer == null) // Nhân viên chưa nhập thông tin khách hàng
+            {
+                customerID = null;
+            }
+            else // Đã nhập thông tin khác hàng
+            {
+                if(customer.customerID == 0) // Nếu khách hàng chưa tồn tại trong hệ thống => Tạo mới khách hàng
+                {
+                    CustomerDAO.Instance.InsertCustomer(customer.CustomerName, customer.Address, customer.PhoneNumber);
+                    customerID = CustomerDAO.Instance.GetMaxCustomerID();
+                }
+                else
+                {
+                    customerID = customer.customerID;
+                }
+            }
+
+            if (invoiceID != -1)
+            {
+                if (MessageBox.Show("Thực hiện thanh toán cho: " + table.tableName, "Xác nhận thanh toán", MessageBoxButtons.OKCancel) == System.Windows.Forms.DialogResult.OK)
+                {
+                    InvoiceDAO.Instance.CheckOut(invoiceID, customerID, employeeID);
+                    showInvoice(table.tableID);
+                    txtPayingCustomer.Clear();
+                }
+            }
+        }
+
+        private void txtPayingCustomer_Click(object sender, EventArgs e)
+        {
+            Customer customerTemp = new Customer(0, "0", "0", "0"); // Khởi tạo giá trị mặc định tránh gây lỗi định dạng
+
+            using (fAddNewCustomer f = new fAddNewCustomer(customerTemp))
+            {
+                if (f.ShowDialog() == DialogResult.OK)
+                {   // Lấy giá trị từ form con sau khi nó đóng
+                    Customer updatedCustomer = f.GetCustomerData();
+
+                    txtPayingCustomer.Text = $"{updatedCustomer.CustomerName}, {updatedCustomer.PhoneNumber}, {updatedCustomer.Address}";
+                    txtPayingCustomer.Tag = updatedCustomer;
+                }
+            }
+        }
     }
 }

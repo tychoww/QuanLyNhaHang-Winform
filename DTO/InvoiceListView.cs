@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace QuanLyNhaHang_Winform.DTO
 {
-    public class InvoiceCheckout
+    public class InvoiceListView
     {
-        public InvoiceCheckout(
+        public InvoiceListView(
             string dishName,
             int quantity,
             double price = 0,
@@ -26,7 +26,7 @@ namespace QuanLyNhaHang_Winform.DTO
         public double price { get; set; }
         public double totalPrice { get; set; }
 
-        public InvoiceCheckout(DataRow row)
+        public InvoiceListView(DataRow row)
         {
             this.dishName = (string)row["dishName"];
             this.quantity = (int)row["quantity"];

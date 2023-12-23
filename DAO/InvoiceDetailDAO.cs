@@ -62,7 +62,8 @@ namespace QuanLyNhaHang_Winform.DAO
 
         public void UpdateInvoiceDetail(int invoiceID, int dishID, int quantity)
         {
-            string query = "UPDATE [Invoice_Detail] SET Quantity += @Quantity WHERE InvoiceID = @InvoiceID AND DishID = @DishID";
+            string query = "UPDATE [Invoice_Detail] SET Quantity += @Quantity" +
+                " WHERE InvoiceID = @InvoiceID AND DishID = @DishID";
 
             // Sử dụng parameters để ngăn chặn SQL Injection
             SqlParameter[] parameters = new SqlParameter[]

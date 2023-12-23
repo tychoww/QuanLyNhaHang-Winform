@@ -18,7 +18,7 @@ namespace QuanLyNhaHang_Winform.DAO
             private set { instance = value; }
         }
 
-        private string connectionString = "server =(local); database = QuanLyNhaHang1; integrated security = true; ";
+        private string connectionString = "server =(local); database = QuanLyNhaHang; integrated security = true; ";
 
         private DataProvider() { }
 
