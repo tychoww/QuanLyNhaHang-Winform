@@ -1,5 +1,6 @@
 ﻿using QuanLyNhaHang_Winform.DTO;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -45,9 +46,9 @@ namespace QuanLyNhaHang_Winform.DAO
             return -1;
         }
 
-        public void CheckOut(int invoiceID, int? customerID, int employeeID)
+        public void CheckOut(int invoiceID, int? customerID, int employeeID, double totalPrice)
         {
-            string query = "UPDATE [Invoice] SET Status = 1, DateCheckout = GETDATE(), CustomerID=@CustomerID, EmployeeID = @EmployeeID" +
+            string query = "UPDATE [Invoice] SET Status = 1, DateCheckout = GETDATE(), CustomerID=@CustomerID, EmployeeID = @EmployeeID , TotalPrice = @TotalPrice" +
                 " WHERE InvoiceID = @InvoiceID";
 
             SqlParameter[] parameters = new SqlParameter[]
@@ -57,7 +58,8 @@ namespace QuanLyNhaHang_Winform.DAO
                 {
                 Value = (object)customerID ?? DBNull.Value
                 },
-                new SqlParameter("@EmployeeID", SqlDbType.Int) { Value = employeeID }
+                new SqlParameter("@EmployeeID", SqlDbType.Int) { Value = employeeID },
+                new SqlParameter("@TotalPrice", SqlDbType.Decimal) { Value = totalPrice },
             };
 
             DataProvider.Instance.ExecuteNonQuery(query, parameters);
@@ -91,6 +93,24 @@ namespace QuanLyNhaHang_Winform.DAO
 
             return result.Rows.Count > 0;
         }
+
+        public DataTable GetOverallStatisticsByDate(DateTime checkIn, DateTime checkOut)
+        {
+
+            string query = "SELECT t.TableName AS [Tên bàn], inv.DateCheckin AS [Ngày vào], inv.DateCheckout AS [Ngày ra], inv.TotalPrice AS [Tổng tiền]" +
+               "FROM [Invoice] AS inv " +
+               "JOIN [Table] AS t ON inv.TableID = t.TableID " +
+               "WHERE inv.Status = 1 AND inv.DateCheckin >= '20231224' AND inv.DateCheckout <= '20231230';";
+
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@DateCheckin", SqlDbType.Date) { Value = checkIn},
+                new SqlParameter("@DateCheckout", SqlDbType.Date) { Value = checkOut },
+            };
+
+            return DataProvider.Instance.ExecuteQuery(query, parameters);
+        }
+
 
         public int GetMaxInvoiceID()
         {

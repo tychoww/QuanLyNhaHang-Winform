@@ -210,6 +210,8 @@ namespace QuanLyNhaHang_Winform
             Table table = lstvInvoiceInfor.Tag as Table;
             Customer customer = txtPayingCustomer.Tag as Customer;
 
+            double totalPrice = Convert.ToDouble(txtTotalPrice.Text.Split(',')[0]);
+
             int invoiceID = InvoiceDAO.Instance.getUncheckInvoiceByTableID(table.TableID);
             int employeeID = currentEmployee.EmployeeID;
             int? customerID;
@@ -235,7 +237,7 @@ namespace QuanLyNhaHang_Winform
             {
                 if (MessageBox.Show("Thực hiện thanh toán cho: " + table.TableName, "Xác nhận thanh toán", MessageBoxButtons.OKCancel) == System.Windows.Forms.DialogResult.OK)
                 {
-                    InvoiceDAO.Instance.CheckOut(invoiceID, customerID, employeeID);
+                    InvoiceDAO.Instance.CheckOut(invoiceID, customerID, employeeID, totalPrice);
                     showInvoice(table.TableID);
                     txtPayingCustomer.Clear();
                     txtPayingCustomer.Tag = null;
