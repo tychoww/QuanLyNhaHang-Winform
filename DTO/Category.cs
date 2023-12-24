@@ -9,21 +9,19 @@ namespace QuanLyNhaHang_Winform.DTO
 {
     public class Category
     {
-        public Category(
-            int categoryID,
-            string categoryName)
+        public Category(int categoryID, string categoryName)
         {
-            this.categoryID = categoryID;
-            this.categoryName = categoryName;
+            this.CategoryID = categoryID;
+            this.CategoryName = categoryName;
         }
 
         public Category(DataRow row)
         {
-            this.categoryID = (int)row["categoryID"];
-            this.categoryName = row["categoryName"].ToString();
+            this.CategoryID = (int)row["CategoryID"];
+            this.CategoryName = row["CategoryName"].ToString();
         }
 
-        public int categoryID { get; set; }
-        public string categoryName { get; set; }
+        public int CategoryID { get; set; }
+        public string CategoryName { get; set; }
     }
 }

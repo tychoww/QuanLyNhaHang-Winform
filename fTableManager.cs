@@ -16,18 +16,18 @@ namespace QuanLyNhaHang_Winform
 {
     public partial class fTableManager : Form
     {
-        private Account loginAccount;
+        private Employee currentEmployee;
 
-        public Account LoginAccount
+        public Employee CurrentEmployee
         {
-            get { return loginAccount; }
-            set { loginAccount = value; ChangeAccount(loginAccount.roleID); }
+            get { return currentEmployee; }
+            set { currentEmployee = value; ChangeAccount(currentEmployee.Role); }
         }
 
-        public fTableManager(Account acc)
+        public fTableManager(Employee emp)
         {
             InitializeComponent();
-            this.LoginAccount = acc;
+            this.CurrentEmployee = emp;
 
             LoadTable();
             LoadCategory();
@@ -48,11 +48,11 @@ namespace QuanLyNhaHang_Winform
         } 
 
         #region Methods
-        void ChangeAccount(string roleID)
+        void ChangeAccount(string role)
         {
-            quảnTrịToolStripMenuItem.Enabled = roleID == "admin";
-            thôngTinCáNhânToolStripMenuItem.Text += " (" + loginAccount.employeeName + ")";
-            txtInvoicingEmployee.Text = loginAccount.employeeName + " (" + loginAccount.phoneNumber + ")";
+            quảnTrịToolStripMenuItem.Enabled = role == "admin";
+            thôngTinCáNhânToolStripMenuItem.Text += " (" + currentEmployee.EmployeeName + ")";
+            txtInvoicingEmployee.Text = currentEmployee.EmployeeName + " (" + currentEmployee.PhoneNumber + ")";
         }
 
         void LoadTable()
@@ -65,19 +65,19 @@ namespace QuanLyNhaHang_Winform
                 btn.Click += btn_Click;
                 btn.Tag = item; // Lưu dữ liệu của table vào object Tag, để lưu dữ liệu của các component
 
-                switch (item.status)
+                switch (item.Status)
                 {
-                    case "reserved":
+                    case "occupied":
                         btn.BackColor = Color.LightPink;
-                        btn.Text = item.tableName + Environment.NewLine + "Có người";
+                        btn.Text = item.TableName + Environment.NewLine + "Có người";
                         break;
                     case "available":
                         btn.BackColor = Color.LightBlue;
-                        btn.Text = item.tableName + Environment.NewLine + "Trống";
+                        btn.Text = item.TableName + Environment.NewLine + "Trống";
                         break;
                     default:
                         btn.BackColor = Color.LightBlue;
-                        btn.Text = item.tableName + Environment.NewLine + "Trống";
+                        btn.Text = item.TableName + Environment.NewLine + "Trống";
                         break;
 
                 }
@@ -85,22 +85,22 @@ namespace QuanLyNhaHang_Winform
             }
         }
 
-        void showInvoice(int tableId)
+        void showInvoice(int tableID)
         {
             lstvInvoiceInfor.Items.Clear();
 
-            List<InvoiceListView> listInvoiceListView = InvoiceListViewDAO.Instance.getListInvoiceListViewByTable(tableId);
+            List<InvoiceListView> listInvoiceListView = InvoiceListViewDAO.Instance.getListInvoiceListViewByTable(tableID);
             double totalPrice = 0;
 
             if (listInvoiceListView.Count > 0)
             {
                 foreach (InvoiceListView item in listInvoiceListView)
                 {
-                    ListViewItem lsvItem = new ListViewItem(item.dishName.ToString());
-                    lsvItem.SubItems.Add(item.quantity.ToString());
-                    lsvItem.SubItems.Add(item.price.ToString());
-                    lsvItem.SubItems.Add(item.totalPrice.ToString());
-                    totalPrice += item.totalPrice;
+                    ListViewItem lsvItem = new ListViewItem(item.DishName.ToString());
+                    lsvItem.SubItems.Add(item.Quantity.ToString());
+                    lsvItem.SubItems.Add(item.Price.ToString());
+                    lsvItem.SubItems.Add(item.TotalPrice.ToString());
+                    totalPrice += item.TotalPrice;
                     lstvInvoiceInfor.Items.Add(lsvItem);
                 }
             }
@@ -111,6 +111,36 @@ namespace QuanLyNhaHang_Winform
             txtTotalPrice.Text = totalPrice.ToString("c", culture);
         }
 
+        void ChangeTableStatus(int tableID)
+        {
+            Button btn = flpTable.Controls.OfType<Button>().FirstOrDefault(b => (b.Tag as Table).TableID == tableID);
+
+            if (btn != null)
+            {
+                if (InvoiceDAO.Instance.CheckPaidInvoiceByTableID(tableID))
+                {
+                    TableDAO.Instance.ChangeStatusTable(tableID, "occupied");
+                    btn.BackColor = Color.LightPink;
+                    btn.Text = (btn.Tag as Table).TableName + Environment.NewLine + "Có người";
+                }
+                else
+                {
+                    TableDAO.Instance.ChangeStatusTable(tableID, "available");
+                    btn.BackColor = Color.LightBlue;
+                    btn.Text = (btn.Tag as Table).TableName + Environment.NewLine + "Trống";
+                }
+            }
+        }
+
+
+        private void btn_Click(object sender, EventArgs e)
+        {
+            Table table = (sender as Button).Tag as Table;
+            int tableId = table.TableID;
+            lblTableSelected.Text = table.TableName;
+            lstvInvoiceInfor.Tag = (sender as Button).Tag;
+            showInvoice(tableId);
+        }
         #endregion
 
         #region Events
@@ -121,17 +151,8 @@ namespace QuanLyNhaHang_Winform
 
         private void cậpNhậtToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            fAccountProfile f = new fAccountProfile(LoginAccount);
+            fEmployeeProfile f = new fEmployeeProfile(CurrentEmployee);
             f.ShowDialog();
-        }
-
-        private void btn_Click(object sender, EventArgs e)
-        {
-            Table table = (sender as Button).Tag as Table;
-            int tableId = table.tableID;
-            lblTableSelected.Text = table.tableName;
-            lstvInvoiceInfor.Tag = (sender as Button).Tag;
-            showInvoice(tableId);
         }
 
         private void cboCategory_SelectedIndexChanged(object sender, EventArgs e)
@@ -141,7 +162,7 @@ namespace QuanLyNhaHang_Winform
             if (cb.SelectedItem == null) return;
 
             Category selected = cb.SelectedItem as Category;
-            id = selected.categoryID;
+            id = selected.CategoryID;
 
             loadDishListByCategoryID(id);
         }
@@ -150,14 +171,14 @@ namespace QuanLyNhaHang_Winform
         {
             Table table = lstvInvoiceInfor.Tag as Table; // Lấy ra Table hiện tại
 
-            int invoiceID = InvoiceDAO.Instance.getUncheckInvoiceByTableID(table.tableID);
-            int dishID = (cboDish.SelectedItem as Dish).dishID;
+            int invoiceID = InvoiceDAO.Instance.getUncheckInvoiceByTableID(table.TableID);
+            int dishID = (cboDish.SelectedItem as Dish).DishID;
             int quanity = (int)nudDishQuantity.Value;
 
             if (invoiceID == -1) // Table chưa có Invoice
             {
                 // Tạo Invoice mới dựa vào Table
-                InvoiceDAO.Instance.InsertInvoice(table.tableID);
+                InvoiceDAO.Instance.InsertInvoice(table.TableID);
                 // Insert InvoiceDetail
                 InvoiceDetailDAO.Instance.InsertInvoiceDetail(InvoiceDAO.Instance.GetMaxInvoiceID(), dishID, quanity);
             }
@@ -174,8 +195,8 @@ namespace QuanLyNhaHang_Winform
                     InvoiceDetailDAO.Instance.InsertInvoiceDetail(invoiceID, dishID, quanity);
                 }
             }
-
-            showInvoice(table.tableID);
+            showInvoice(table.TableID);
+            ChangeTableStatus(table.TableID);
         }
         #endregion
 
@@ -184,8 +205,8 @@ namespace QuanLyNhaHang_Winform
             Table table = lstvInvoiceInfor.Tag as Table;
             Customer customer = txtPayingCustomer.Tag as Customer;
 
-            int invoiceID = InvoiceDAO.Instance.getUncheckInvoiceByTableID(table.tableID);
-            int employeeID = loginAccount.employeeID;
+            int invoiceID = InvoiceDAO.Instance.getUncheckInvoiceByTableID(table.TableID);
+            int employeeID = currentEmployee.EmployeeID;
             int? customerID;
 
             if(customer == null) // Nhân viên chưa nhập thông tin khách hàng
@@ -194,24 +215,27 @@ namespace QuanLyNhaHang_Winform
             }
             else // Đã nhập thông tin khác hàng
             {
-                if(customer.customerID == 0) // Nếu khách hàng chưa tồn tại trong hệ thống => Tạo mới khách hàng
+                if(customer.CustomerID == 0) // Nếu khách hàng chưa tồn tại trong hệ thống => Tạo mới khách hàng
                 {
                     CustomerDAO.Instance.InsertCustomer(customer.CustomerName, customer.Address, customer.PhoneNumber);
                     customerID = CustomerDAO.Instance.GetMaxCustomerID();
                 }
-                else
+                else // Khách hàng đã tồn tại trong hệ thống => lấy luôn id khách hàng
                 {
-                    customerID = customer.customerID;
+                    customerID = customer.CustomerID;
                 }
             }
 
             if (invoiceID != -1)
             {
-                if (MessageBox.Show("Thực hiện thanh toán cho: " + table.tableName, "Xác nhận thanh toán", MessageBoxButtons.OKCancel) == System.Windows.Forms.DialogResult.OK)
+                if (MessageBox.Show("Thực hiện thanh toán cho: " + table.TableName, "Xác nhận thanh toán", MessageBoxButtons.OKCancel) == System.Windows.Forms.DialogResult.OK)
                 {
                     InvoiceDAO.Instance.CheckOut(invoiceID, customerID, employeeID);
-                    showInvoice(table.tableID);
+                    showInvoice(table.TableID);
                     txtPayingCustomer.Clear();
+                    txtPayingCustomer.Tag = null;
+                    ChangeTableStatus(table.TableID);
+                    LoadTable();
                 }
             }
         }

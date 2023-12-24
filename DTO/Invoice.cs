@@ -9,47 +9,38 @@ namespace QuanLyNhaHang_Winform.DTO
 {
     public class Invoice
     {
-        public Invoice(
-            int invoiceID,
-            int customerID,
-            int employeeID,
-            int tableID,
-            DateTime dateCheckin,
-            DateTime dateCheckout,
-            int status)
+        public Invoice(int invoiceID, int customerID, int employeeID, int tableID, DateTime dateCheckin, DateTime dateCheckout, int status)
         {
-            this.invoiceID = invoiceID;
-            this.customerID = customerID;
-            this.employeeID = employeeID;
-            this.tableID = tableID;
-            this.dateCheckin = dateCheckin;
-            this.dateCheckout = dateCheckout;
-            this.status = status;
+            this.InvoiceID = invoiceID;
+            this.CustomerID = customerID;
+            this.EmployeeID = employeeID;
+            this.TableID = tableID;
+            this.DateCheckin = dateCheckin;
+            this.DateCheckout = dateCheckout;
+            this.Status = status;
         }
 
-        public int invoiceID { get; set; }
-        public int customerID { get; set; }
-        public int employeeID { get; set; }
-        public int tableID { get; set; }
-        public DateTime dateCheckin { get; set; }
-        public DateTime dateCheckout { get; set; }
-        public int status { get; set; }
+        public int InvoiceID { get; set; }
+        public int CustomerID { get; set; }
+        public int EmployeeID { get; set; }
+        public int TableID { get; set; }
+        public DateTime DateCheckin { get; set; }
+        public DateTime? DateCheckout { get; set; } // Sử dụng DateTime? để cho phép giá trị null
+        public int Status { get; set; }
 
         public Invoice(DataRow row)
         {
-            this.invoiceID = (int)row["invoiceID"];
-            // Kiểm tra xem giá trị có phải là null hay không trước khi chuyển đổi
-            this.customerID = Convert.IsDBNull(row["customerID"]) ? 0 : (int)row["customerID"]; // Các giá trị có thể NULL => 0
-            this.employeeID = Convert.IsDBNull(row["employeeID"]) ? 0 : (int)row["employeeID"]; // Các giá trị có thể NULL => 0
-            this.tableID = (int)row["tableID"];
-            this.dateCheckin = (DateTime)row["dateCheckin"];
+            this.InvoiceID = (int)row["InvoiceID"];
+            this.CustomerID = Convert.IsDBNull(row["CustomerID"]) ? 0 : (int)row["CustomerID"];
+            this.EmployeeID = Convert.IsDBNull(row["EmployeeID"]) ? 0 : (int)row["EmployeeID"];
+            this.TableID = (int)row["TableID"];
+            this.DateCheckin = (DateTime)row["DateCheckin"];
 
-            var dateCheckoutTemp = row["dateCheckout"];
-            if(dateCheckoutTemp.ToString() != "")
-            {
-                this.dateCheckout = (DateTime)dateCheckoutTemp;
-            }
-            this.status = (int)row["status"];
+            var dateCheckoutTemp = row["DateCheckout"];
+            this.DateCheckout = dateCheckoutTemp != DBNull.Value ? (DateTime?)dateCheckoutTemp : null;
+
+            this.Status = (int)row["Status"];
         }
     }
+
 }

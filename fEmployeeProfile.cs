@@ -11,27 +11,26 @@ using System.Windows.Forms;
 
 namespace QuanLyNhaHang_Winform
 {
-    public partial class fAccountProfile : Form
+    public partial class fEmployeeProfile : Form
     {
 
-        private Account loginAccount;
+        private Employee currentEmployee;
 
-        public Account LoginAccount
+        public Employee CurrentEmployee
         {
-            get { return loginAccount; }
-            set { loginAccount = value; ChangeAccount(loginAccount); }
+            get { return currentEmployee; }
+            set { currentEmployee = value;}
         }
 
-        public fAccountProfile(Account acc)
+        public fEmployeeProfile(Employee emp)
         {
             InitializeComponent();
-
-            LoginAccount = acc;
+            this.currentEmployee = emp;
         }
 
-        void ChangeAccount(Account acc)
+        void ChangeAccount(Employee emp)
         {
-            txtUserName.Text = LoginAccount.userName;  
+            txtUserName.Text = CurrentEmployee.PhoneNumber;  
         }
 
         void UpdateAccount()

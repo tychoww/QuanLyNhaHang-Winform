@@ -25,9 +25,8 @@ namespace QuanLyNhaHang_Winform.DAO
 
         // Thành công: Bill ID
         // Thất bại: -1
-        public int getUncheckInvoiceByTableID(int tableID)
+        public int getUncheckInvoiceByTableID(int tableID) // Kiểm tra bàn mà bill chưa thanh toán status = 0
         {
-
             string query = "SELECT * FROM [Invoice] WHERE TableID = @TableID AND Status = @Status";
 
             SqlParameter[] parameters = new SqlParameter[]
@@ -41,7 +40,7 @@ namespace QuanLyNhaHang_Winform.DAO
             if (data.Rows.Count > 0)
             {
                 Invoice invoice = new Invoice(data.Rows[0]);
-                return invoice.invoiceID;
+                return invoice.InvoiceID;
             }
             return -1;
         }
@@ -75,6 +74,22 @@ namespace QuanLyNhaHang_Winform.DAO
             };
 
             DataProvider.Instance.ExecuteNonQuery(query, parameters);
+        }
+
+        public bool CheckPaidInvoiceByTableID(int tableID)
+        {
+            string query = "SELECT * FROM [Invoice] WHERE TableID = @TableID and Status = @Status;";
+
+            // Sử dụng parameters để ngăn chặn SQL Injection
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@TableID", SqlDbType.Int) { Value = tableID},
+                new SqlParameter("@Status", SqlDbType.Int) { Value = 0 }
+            };
+
+            DataTable result = DataProvider.Instance.ExecuteQuery(query, parameters);
+
+            return result.Rows.Count > 0;
         }
 
         public int GetMaxInvoiceID()

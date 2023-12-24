@@ -1,6 +1,6 @@
 ﻿namespace QuanLyNhaHang_Winform
 {
-    partial class fAccountProfile
+    partial class fEmployeeProfile
     {
         /// <summary>
         /// Required designer variable.

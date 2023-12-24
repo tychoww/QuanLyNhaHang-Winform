@@ -9,29 +9,26 @@ namespace QuanLyNhaHang_Winform.DTO
 {
     public class InvoiceListView
     {
-        public InvoiceListView(
-            string dishName,
-            int quantity,
-            double price = 0,
-            double totalPrice = 0)
+        public InvoiceListView(string dishName, int quantity, double price = 0, double totalPrice = 0)
         {
-            this.dishName = dishName;
-            this.quantity = quantity;
-            this.price = price;
-            this.totalPrice = totalPrice;
+            this.DishName = dishName;
+            this.Quantity = quantity;
+            this.Price = price;
+            this.TotalPrice = totalPrice;
         }
 
-        public string dishName { get; set; }
-        public int quantity { get; set; }
-        public double price { get; set; }
-        public double totalPrice { get; set; }
+        public string DishName { get; set; }
+        public int Quantity { get; set; }
+        public double Price { get; set; }
+        public double TotalPrice { get; set; }
 
         public InvoiceListView(DataRow row)
         {
-            this.dishName = (string)row["dishName"];
-            this.quantity = (int)row["quantity"];
-            this.price = Convert.ToDouble(row["price"].ToString());
-            this.totalPrice = Convert.ToDouble(row["totalPrice"].ToString());
+            this.DishName = row["DishName"].ToString();
+            this.Quantity = (int)row["Quantity"];
+            this.Price = Convert.ToDouble(row["Price"].ToString());
+            this.TotalPrice = Convert.ToDouble(row["TotalPrice"].ToString());
         }
     }
+
 }

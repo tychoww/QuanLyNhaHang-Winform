@@ -13,26 +13,26 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace QuanLyNhaHang_Winform.DAO
 {
-    public class AccountDAO
+    public class EmployeeDAO
     {
-        private static AccountDAO instance;
+        private static EmployeeDAO instance;
 
-        public static AccountDAO Instance
+        public static EmployeeDAO Instance
         {
-            get { return instance ?? (instance = new AccountDAO()); }
+            get { return instance ?? (instance = new EmployeeDAO()); }
             private set { instance = value; }
         }
 
-        private AccountDAO() { }
+        private EmployeeDAO() { }
 
-        public bool Login(string userName, string passWord)
+        public bool Login(string phoneNumber, string passWord)
         {
-            string query = "SELECT * FROM dbo.Account WHERE Username = @Username AND Password = @Password";
+            string query = "SELECT * FROM [Employee] WHERE PhoneNumber = @PhoneNumber AND Password = @Password";
 
             // Sử dụng parameters để ngăn chặn SQL Injection
             SqlParameter[] parameters = new SqlParameter[]
             {
-                new SqlParameter("@Username", SqlDbType.NVarChar) { Value = userName },
+                new SqlParameter("@PhoneNumber", SqlDbType.NVarChar) { Value = phoneNumber },
                 new SqlParameter("@Password", SqlDbType.NVarChar) { Value = passWord }
             };
 
@@ -41,20 +41,20 @@ namespace QuanLyNhaHang_Winform.DAO
             return result.Rows.Count > 0;
         }
 
-        public Account GetAccountByUserName(string username)
+        public Employee GetEmployeeByPhoneNumber(string phoneNumber)
         {
-            string query = "SELECT * FROM Employee INNER JOIN Account ON Employee.EmployeeID = Account.EmployeeID WHERE Account.Username = @Username;";
+            string query = "SELECT * FROM [Employee] WHERE PhoneNumber = @PhoneNumber;";
 
             SqlParameter[] parameters = new SqlParameter[]
             {
-                new SqlParameter("@Username", SqlDbType.NVarChar) { Value = username },
+               new SqlParameter("@PhoneNumber", SqlDbType.NVarChar) { Value = phoneNumber }
             };
             DataTable data = DataProvider.Instance.ExecuteQuery(query, parameters);
 
 
             foreach (DataRow item in data.Rows)
             {
-                return new Account(item);
+                return new Employee(item);
             }
 
             return null;

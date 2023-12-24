@@ -9,30 +9,25 @@ namespace QuanLyNhaHang_Winform.DTO
 {
     public class Dish
     {
-        public Dish(
-            int dishID,
-            string dishName,
-            double price,
-            int categoryID)
+        public Dish(int dishID, string dishName, double price, int categoryID)
         {
-            this.dishID = dishID;
-            this.dishName = dishName;
-            this.price = price;
-            this.categoryID = categoryID;
+            this.DishID = dishID;
+            this.DishName = dishName;
+            this.Price = price;
+            this.CategoryID = categoryID;
         }
 
         public Dish(DataRow row)
         {
-            this.dishID = (int)row["dishID"];
-            this.dishName = row["dishName"].ToString();
-            this.price = Convert.ToDouble(row["price"].ToString());
-            this.categoryID = (int)row["categoryID"];
+            this.DishID = (int)row["DishID"];
+            this.DishName = row["DishName"].ToString();
+            this.Price = Convert.ToDouble(row["Price"].ToString());
+            this.CategoryID = (int)row["CategoryID"];
         }
 
-        public int dishID { get; set; }
-        public string dishName { get; set; }
-        public double price { get; set; }
-        public int categoryID { get; set; }
+        public int DishID { get; set; }
+        public string DishName { get; set; }
+        public double Price { get; set; }
+        public int CategoryID { get; set; }
     }
-
 }

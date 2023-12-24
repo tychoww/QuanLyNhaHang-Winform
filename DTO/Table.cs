@@ -9,25 +9,23 @@ namespace QuanLyNhaHang_Winform.DTO
 {
     public class Table
     {
-        public Table(
-            int tableID,
-            string tableName,
-            string status)
+        public Table(int tableID, string tableName, string status)
         {
-            this.tableID = tableID;
-            this.tableName = tableName;
-            this.status = status;
+            this.TableID = tableID;
+            this.TableName = tableName;
+            this.Status = status;
         }
 
-        public int tableID { get; set; }
-        public string tableName { get; set; }
-        public string status { get; set; }
+        public int TableID { get; set; }
+        public string TableName { get; set; }
+        public string Status { get; set; }
 
         public Table(DataRow row)
         {
-            this.tableID = (int)row["tableID"];
-            this.tableName = row["tableName"].ToString();
-            this.status = row["status"].ToString();
+            this.TableID = (int)row["TableID"];
+            this.TableName = row["TableName"].ToString();
+            this.Status = row["Status"].ToString();
         }
     }
+
 }

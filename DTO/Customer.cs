@@ -9,13 +9,9 @@ namespace QuanLyNhaHang_Winform.DTO
 {
     public class Customer
     {
-        public Customer(
-            int customerID,
-            string customerName,
-            string address,
-            string phoneNumber)
+        public Customer(int customerID, string customerName, string address, string phoneNumber)
         {
-            this.customerID = customerID;
+            this.CustomerID = customerID;
             this.CustomerName = customerName;
             this.Address = address;
             this.PhoneNumber = phoneNumber;
@@ -23,13 +19,13 @@ namespace QuanLyNhaHang_Winform.DTO
 
         public Customer(DataRow row)
         {
-            this.customerID = (int)row["customerID"];
-            this.CustomerName = row["customerName"].ToString();
-            this.Address = row["address"].ToString();
-            this.PhoneNumber = row["phoneNumber"].ToString();
+            this.CustomerID = (int)row["CustomerID"];
+            this.CustomerName = row["CustomerName"].ToString();
+            this.Address = row["Address"].ToString();
+            this.PhoneNumber = row["PhoneNumber"].ToString();
         }
 
-        public int customerID { get; set; }
+        public int CustomerID { get; set; }
         public string CustomerName { get; set; }
         public string Address { get; set; }
         public string PhoneNumber { get; set; }

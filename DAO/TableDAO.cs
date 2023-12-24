@@ -41,5 +41,18 @@ namespace QuanLyNhaHang_Winform.DAO
 
             return tableList;
         }
+
+        public void ChangeStatusTable(int tableID, string status)
+        {
+            string query = "UPDATE [Table] SET Status = @Status WHERE TableID = @TableID;";
+
+            SqlParameter[] parameters = new SqlParameter[]
+{
+                new SqlParameter("@TableID", SqlDbType.Int) { Value = tableID},
+                new SqlParameter("@Status", SqlDbType.NVarChar) { Value = status}
+};
+
+            DataProvider.Instance.ExecuteNonQuery(query, parameters);
+        }
     }
 }

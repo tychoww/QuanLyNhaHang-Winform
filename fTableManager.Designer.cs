@@ -156,6 +156,11 @@
             this.nudDishQuantity.Name = "nudDishQuantity";
             this.nudDishQuantity.Size = new System.Drawing.Size(58, 20);
             this.nudDishQuantity.TabIndex = 4;
+            this.nudDishQuantity.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // cboDish
             // 

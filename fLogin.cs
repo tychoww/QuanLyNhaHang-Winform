@@ -29,19 +29,19 @@ namespace QuanLyNhaHang_Winform
             }
         }
 
-        bool Login (string userName, string passWord)
+        bool Login (string phoneNumber, string passWord)
         {
-            return AccountDAO.Instance.Login(userName, passWord);
+            return EmployeeDAO.Instance.Login(phoneNumber, passWord);
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            string userName = txtUserName.Text;
+            string phoneNumber = txtPhoneNumber.Text;
             string passWord = txtPassWord.Text;
-            if (Login(userName, passWord))
+            if (Login(phoneNumber, passWord))
             {
-                Account loginAccount = AccountDAO.Instance.GetAccountByUserName(userName);
-                fTableManager f = new fTableManager(loginAccount);
+                Employee currentEmployee = EmployeeDAO.Instance.GetEmployeeByPhoneNumber(phoneNumber);
+                fTableManager f = new fTableManager(currentEmployee);
 
                 this.Hide();
                 f.ShowDialog();

@@ -36,7 +36,7 @@
             this.txtPassWord = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
-            this.txtUserName = new System.Windows.Forms.TextBox();
+            this.txtPhoneNumber = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -104,7 +104,7 @@
             // panel2
             // 
             this.panel2.Controls.Add(this.label1);
-            this.panel2.Controls.Add(this.txtUserName);
+            this.panel2.Controls.Add(this.txtPhoneNumber);
             this.panel2.Location = new System.Drawing.Point(20, 20);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(372, 48);
@@ -116,16 +116,16 @@
             this.label1.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(13, 13);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(134, 19);
+            this.label1.Size = new System.Drawing.Size(119, 19);
             this.label1.TabIndex = 5;
-            this.label1.Text = "Tên đăng nhập: ";
+            this.label1.Text = "Số điện thoại: ";
             // 
-            // txtUserName
+            // txtPhoneNumber
             // 
-            this.txtUserName.Location = new System.Drawing.Point(158, 12);
-            this.txtUserName.Name = "txtUserName";
-            this.txtUserName.Size = new System.Drawing.Size(192, 20);
-            this.txtUserName.TabIndex = 4;
+            this.txtPhoneNumber.Location = new System.Drawing.Point(158, 12);
+            this.txtPhoneNumber.Name = "txtPhoneNumber";
+            this.txtPhoneNumber.Size = new System.Drawing.Size(192, 20);
+            this.txtPhoneNumber.TabIndex = 4;
             // 
             // fLogin
             // 
@@ -152,7 +152,7 @@
 
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtUserName;
+        private System.Windows.Forms.TextBox txtPhoneNumber;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtPassWord;
