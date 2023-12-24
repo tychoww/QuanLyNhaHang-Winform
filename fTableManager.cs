@@ -45,7 +45,7 @@ namespace QuanLyNhaHang_Winform
             List<Dish> listDish = DishDAO.Instance.getDishBytCategoryID(categoryID);
             cboDish.DataSource = listDish;
             cboDish.DisplayMember = "dishName";
-        } 
+        }
 
         #region Methods
         void ChangeAccount(string role)
@@ -214,13 +214,13 @@ namespace QuanLyNhaHang_Winform
             int employeeID = currentEmployee.EmployeeID;
             int? customerID;
 
-            if(customer == null) // Nhân viên chưa nhập thông tin khách hàng
+            if (customer == null) // Nhân viên chưa nhập thông tin khách hàng
             {
                 customerID = null;
             }
             else // Đã nhập thông tin khác hàng
             {
-                if(customer.CustomerID == 0) // Nếu khách hàng chưa tồn tại trong hệ thống => Tạo mới khách hàng
+                if (customer.CustomerID == 0) // Nếu khách hàng chưa tồn tại trong hệ thống => Tạo mới khách hàng
                 {
                     CustomerDAO.Instance.InsertCustomer(customer.CustomerName, customer.Address, customer.PhoneNumber);
                     customerID = CustomerDAO.Instance.GetMaxCustomerID();
@@ -259,6 +259,13 @@ namespace QuanLyNhaHang_Winform
                     txtPayingCustomer.Tag = updatedCustomer;
                 }
             }
+        }
+
+        private void quảnTrịToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            fAdmin fAdmin = new fAdmin();
+            fAdmin.ShowDialog();
+            this.Show();
         }
     }
 }

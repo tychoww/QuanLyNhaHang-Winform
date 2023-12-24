@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,6 +34,25 @@ namespace QuanLyNhaHang_Winform.DAO
             }
 
             return list;
+        }
+
+        public Category GetCategoryByID(int categoryID)
+        {
+            string query = "SELECT * FROM [Category] WHERE CategoryID = @CategoryID;";
+
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@CategoryID", SqlDbType.NVarChar) { Value = categoryID },
+            };
+            DataTable data = DataProvider.Instance.ExecuteQuery(query, parameters);
+
+
+            foreach (DataRow item in data.Rows)
+            {
+                return new Category(item);
+            }
+
+            return null;
         }
     }
 }

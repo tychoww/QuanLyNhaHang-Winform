@@ -43,5 +43,22 @@ namespace QuanLyNhaHang_Winform.DAO
 
             return listDishByCategoryID;
         }
+
+        public List<Dish> getListDish()
+        {
+            List<Dish> listDish = new List<Dish>();
+
+            string query = "SELECT * FROM [Dish]";
+
+            DataTable data = DataProvider.Instance.ExecuteQuery(query);
+
+            foreach (DataRow item in data.Rows)
+            {
+                Dish dish = new Dish(item);
+                listDish.Add(dish);
+            }
+
+            return listDish;
+        }
     }
 }
