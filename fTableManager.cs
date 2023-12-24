@@ -151,8 +151,13 @@ namespace QuanLyNhaHang_Winform
 
         private void cậpNhậtToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            fEmployeeProfile f = new fEmployeeProfile(CurrentEmployee);
-            f.ShowDialog();
+            using (fEmployeeProfile f = new fEmployeeProfile(CurrentEmployee))
+            {
+                if (f.ShowDialog() == DialogResult.OK)
+                {   // Update lại currentEmployee
+                    this.Close();
+                }
+            }
         }
 
         private void cboCategory_SelectedIndexChanged(object sender, EventArgs e)

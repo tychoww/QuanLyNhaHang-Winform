@@ -59,5 +59,23 @@ namespace QuanLyNhaHang_Winform.DAO
 
             return null;
         }
+
+        public void UpdateEmployee(string employeeName, string phoneNumber, string passWord, string role, int employeeID)
+        {
+            string query = "UPDATE [Employee] " +
+                "SET EmployeeName = @EmployeeName, PhoneNumber= @PhoneNumber, Password = @Password, Role = @Role " +
+                "WHERE EmployeeID = @EmployeeID;";
+
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@EmployeeName", SqlDbType.NVarChar) { Value = employeeName },
+                new SqlParameter("@PhoneNumber", SqlDbType.NVarChar) { Value = phoneNumber },
+                new SqlParameter("@Password", SqlDbType.NVarChar) { Value = passWord },
+                new SqlParameter("@Role", SqlDbType.NVarChar) { Value = role },
+                new SqlParameter("@EmployeeID", SqlDbType.Int) { Value = employeeID }
+            };
+
+            DataProvider.Instance.ExecuteNonQuery(query, parameters);
+        }
     }
 }
